@@ -21,14 +21,25 @@
                                         ajax="false"/>
                             <p:menuitem action="#{controleEstado.listar()}"
                                         value="Manutenção de Estados"
-                                        ajax="false"/>                                    
+                                        ajax="false"/>       
+                            <p:menuitem action="#{controlePermissao.listar()}"
+                                        value="Manutenção de Permissões"
+                                        ajax="false"/>                              
                         </p:submenu>
+                        <p:submenu label="Pessoas">
+                            <p:menuitem action="#{controleUsuario.listar()}"
+                                        value="Manutenção de Usuários"
+                                        ajax="false"/> 
+                            <p:menuitem action="#{controlePessoaFisica.listar()}"
+                                        value="Manutenção de Pessoas Físicas"
+                                        ajax="false"/>   
+                        </p:submenu>                        
                     </p:column>
                 </p:submenu>                       
             </p:megaMenu>            
         </h:form>
         <ui:insert name="conteudo">
-            
+
         </ui:insert>                
         <ui:include src="ajaxstatus.xhtml"/>
     </h:body>
