@@ -28,6 +28,7 @@ public class UsuarioDAO<TIPO> extends DAOGenerico<Usuario> implements Serializab
     @Override
     public Usuario getObjectById(Object id) throws Exception {
         Usuario obj = em.find(Usuario.class, id);
+        // Deve-se inicializar as coleções para não gerar erro de LazyInicializationException
         obj.getPermissoes().size();
         return obj;
     }    

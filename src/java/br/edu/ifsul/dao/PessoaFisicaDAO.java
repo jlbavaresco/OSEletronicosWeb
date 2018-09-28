@@ -30,6 +30,7 @@ public class PessoaFisicaDAO<TIPO> extends DAOGenerico<PessoaFisica> implements 
     @Override
     public PessoaFisica getObjectById(Object id) throws Exception {
         PessoaFisica obj = em.find(PessoaFisica.class, id);
+        // Deve-se inicializar as coleções para não gerar erro de LazyInicializationException
         obj.getPermissoes().size();
         return obj;
     }        
