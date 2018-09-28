@@ -18,10 +18,12 @@
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
-                        <p:selectOneMenu value="#{controlePermissao.dao.ordem}">                            
-                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                        <p:selectOneMenu value="#{controlePermissao.dao.ordemAtual}" id="selectOrdem"
+                                         converter="#{controlePermissao.dao.converterOrdem}">                            
+                            <f:selectItems value="#{controlePermissao.dao.listaOrdem}"
+                                           var="ord" itemValue="#{ord.atributo}"/>
                             <p:ajax update="listagem"/>
-                        </p:selectOneMenu>
+                        </p:selectOneMenu>                         
                         <p:outputLabel value="Filtro:"/>
                         <p:inputText value="#{controlePermissao.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
@@ -30,7 +32,7 @@
                         <p:outputLabel value="Máximo de Objetos"/>
                         <p:inputNumber value="#{controlePermissao.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
-                            <p:ajax event="keyup" update="listagem"/> 
+                            <p:ajax event="blur" update="listagem"/> 
                         </p:inputNumber>
                         <p:commandButton action="#{controlePermissao.dao.primeiro()}" 
                                          title="Primeiro" icon="ui-icon-seek-first" update="listagem"/>

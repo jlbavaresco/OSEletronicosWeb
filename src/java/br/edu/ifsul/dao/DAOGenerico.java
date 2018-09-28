@@ -1,6 +1,8 @@
 package br.edu.ifsul.dao;
 
+import br.edu.ifsul.converters.ConverterOrdem;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -18,9 +20,11 @@ public class DAOGenerico<TIPO> implements Serializable {
     private List<TIPO> listaTodos;
     @PersistenceContext(unitName = "OSEletronicosWebPU")
     protected EntityManager em;
-    protected Class classePersistente;
-    protected String ordem = "id";
+    protected Class classePersistente;    
     protected String filtro = "";
+    protected List<Ordem> listaOrdem = new ArrayList<>();
+    protected Ordem ordemAtual;
+    protected ConverterOrdem converterOrdem;
     protected Integer maximoObjetos = 8;
     protected Integer posicaoAtual = 0;
     protected Integer totalObjetos = 0;
@@ -32,20 +36,29 @@ public class DAOGenerico<TIPO> implements Serializable {
     public List<TIPO> getListaObjetos() {
         String jpql = "from " + classePersistente.getSimpleName();
         String where = "";
+        // removendo caracteres para proteger de sql injection
         filtro = filtro.replaceAll("[';-]", "");
-        if (getFiltro().length() > 0) {
-            if (getOrdem().equals("id")) {
-                try {
-                    Integer.parseInt(getFiltro());
-                    where += " where " + getOrdem() + " = '" + getFiltro() + "' ";
-                } catch (Exception e) {
-                }
-            } else {
-                where += " where upper(" + getOrdem() + ") like '" + getFiltro().toUpperCase() + "%' ";
-            }
+        if (filtro.length() > 0) {
+           switch (ordemAtual.getOperador()) {
+                case "=":
+                    // tratamento para caso digitem com id selecionado algo que não é numero não gerar exceção
+                    if (ordemAtual.getAtributo().equals("id")) {
+                        try {
+                            Integer i = Integer.parseInt(filtro);
+                        } catch (Exception e) {
+                            filtro = "0";
+                        }
+                    }
+                    where += " where " + ordemAtual.getAtributo() + " = '" + filtro + "' ";
+                    break;
+                case "like":
+                     where += " where upper(" + ordemAtual.getAtributo() + ") like '" + filtro.toUpperCase() + "%' ";
+                    break;
+            }                        
         }
         jpql += where;
-        jpql += " order by " + ordem;
+        jpql += " order by " + ordemAtual.getAtributo();
+        System.out.println("JPQL: " + jpql);
         totalObjetos = em.createQuery(jpql).getResultList().size();
         return em.createQuery(jpql).
                 setFirstResult(posicaoAtual).
@@ -92,7 +105,7 @@ public class DAOGenerico<TIPO> implements Serializable {
     }
 
     public List<TIPO> getListaTodos() {
-        String jpql = "from " + classePersistente.getSimpleName();
+        String jpql = "from " + classePersistente.getSimpleName() + " order by " + ordemAtual.getAtributo();
         return em.createQuery(jpql).getResultList();
     }
 
@@ -137,14 +150,6 @@ public class DAOGenerico<TIPO> implements Serializable {
         this.classePersistente = classePersistente;
     }
 
-    public String getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(String ordem) {
-        this.ordem = ordem;
-    }
-
     public String getFiltro() {
         return filtro;
     }
@@ -175,6 +180,30 @@ public class DAOGenerico<TIPO> implements Serializable {
 
     public void setTotalObjetos(Integer totalObjetos) {
         this.totalObjetos = totalObjetos;
+    }
+
+    public List<Ordem> getListaOrdem() {
+        return listaOrdem;
+    }
+
+    public void setListaOrdem(List<Ordem> listaOrdem) {
+        this.listaOrdem = listaOrdem;
+    }
+
+    public Ordem getOrdemAtual() {
+        return ordemAtual;
+    }
+
+    public void setOrdemAtual(Ordem ordemAtual) {
+        this.ordemAtual = ordemAtual;
+    }
+
+    public ConverterOrdem getConverterOrdem() {
+        return converterOrdem;
+    }
+
+    public void setConverterOrdem(ConverterOrdem converterOrdem) {
+        this.converterOrdem = converterOrdem;
     }
 
 }

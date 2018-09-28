@@ -1,5 +1,6 @@
 package br.edu.ifsul.dao;
 
+import br.edu.ifsul.converters.ConverterOrdem;
 import br.edu.ifsul.modelo.Permissao;
 import java.io.Serializable;
 import javax.ejb.Stateful;
@@ -15,6 +16,11 @@ public class PermissaoDAO<TIPO> extends DAOGenerico<Permissao> implements Serial
     public PermissaoDAO(){
         super();
         classePersistente = Permissao.class;
-        ordem = "nome";
+        // inicializar as ordenações possiveis
+        listaOrdem.add(new Ordem("nome", "Nome", "like"));
+        // definir qual a ordenação padrão no caso o primeiro elemento da lista (indice 0)
+        ordemAtual = listaOrdem.get(0);
+        // inicializar o conversor com a lista de ordens
+        converterOrdem = new ConverterOrdem(listaOrdem);
     }
 }
