@@ -3,6 +3,7 @@ package br.edu.ifsul.controle;
 
 import br.edu.ifsul.dao.MarcaDAO;
 import br.edu.ifsul.dao.ProdutoDAO;
+import br.edu.ifsul.modelo.Arquivo;
 import br.edu.ifsul.modelo.Marca;
 
 
@@ -10,8 +11,13 @@ import br.edu.ifsul.modelo.Produto;
 import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -28,6 +34,7 @@ public class ControleProduto implements Serializable {
     private Produto objeto;
     @EJB
     private MarcaDAO<Marca> daoMarca;
+    private Arquivo arquivo;
     
     public ControleProduto(){
         
@@ -75,7 +82,53 @@ public class ControleProduto implements Serializable {
             Util.mensagemErro("Erro ao persistir objeto: " + 
                     Util.getMensagemErro(e));
         }
+    }   
+    
+    public void novoArquivo(){
+        arquivo = new Arquivo();
     }
+    
+    public void salvarArquivo(){
+        objeto.adicionarArquivo(arquivo);
+        Util.mensagemInformacao("Arquivo adicionado com sucesso!");
+    }
+    
+    public void removerArquivo(int index){
+        objeto.removerArquivo(index);
+        Util.mensagemInformacao("Arquivo removido com sucesso!");
+    }
+    
+    public void enviarArquivo(FileUploadEvent event) {
+        try {
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+            FacesContext aFacesContext = FacesContext.getCurrentInstance();
+            ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+            arquivo.setArquivo(event.getFile().getContents());            
+            String nomeArquivo = event.getFile().getFileName();
+            nomeArquivo = nomeArquivo.replaceAll("[ ]", "_");            
+            arquivo.setNomeArquivo(nomeArquivo);
+            Util.mensagemInformacao("Arquivo enviado com sucesso!");
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao enviar arquivo: " + Util.getMensagemErro(e));
+        }
+    }    
+
+    public void downloadVersao(int index) {
+        arquivo = objeto.getArquivos().get(index);
+        byte[] download = (byte[]) arquivo.getArquivo();
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.addHeader("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
+        response.setContentLength(download.length);
+        try {
+            response.setContentType("application/octet-stream");
+            response.getOutputStream().write(download);
+            response.getOutputStream().flush();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception e) {            
+            Util.mensagemErro("Erro no download do arquivo: " +  Util.getMensagemErro(e));
+        }
+    }    
 
     public ProdutoDAO getDao() {
         return dao;
@@ -99,6 +152,14 @@ public class ControleProduto implements Serializable {
 
     public void setDaoMarca(MarcaDAO<Marca> daoMarca) {
         this.daoMarca = daoMarca;
+    }
+
+    public Arquivo getArquivo() {
+        return arquivo;
+    }
+
+    public void setArquivo(Arquivo arquivo) {
+        this.arquivo = arquivo;
     }
 
 }

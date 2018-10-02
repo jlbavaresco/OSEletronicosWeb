@@ -85,7 +85,7 @@
                 </p:dataTable>
             </h:form>
             <p:dialog header="Edição" widgetVar="dlg" resizable="false"
-                      modal="true" width="50%" height="100%" >
+                      modal="true" width="50%" height="100%" position="top">
                 <h:form id="formEdicao" prependId="false">
                     <p:growl id="growl"/>
                     <p:tabView id="tab">
@@ -119,7 +119,32 @@
                             </div>
                         </p:tab>
                         <p:tab title="Arquivos">
-
+                            <p:commandButton value="Novo arquivo" icon="ui-icon-plus"
+                                             actionListener="#{controleProduto.novoArquivo()}"
+                                             update="formEdicaoArquivo"
+                                             process="@this"
+                                             oncomplete="PF('dlgArquivo').show();"/>
+                            <p:dataTable value="#{controleProduto.objeto.arquivos}" var="arq" id="listaArquivos" 
+                                         rowIndexVar="idxArq">
+                                <p:column headerText="Descrição" width="30%">
+                                    <p:outputLabel value="#{arq.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Nome do arquivo" width="50%">
+                                    <p:commandLink action="#{controleProduto.downloadVersao(idxArq)}"
+                                                   value="#{arq.nomeArquivo}" ajax="false"/> 
+                                </p:column>                                    
+                                <p:column headerText="Ações" width="15%">
+                                    <div align="center">
+                                        <p:commandButton actionListener="#{controleProduto.removerArquivo(idxArq)}"
+                                                         icon="ui-icon-trash"
+                                                         update="listaArquivos growl"
+                                                         process="@this"
+                                                         title="Remover arquivo"
+                                                         onclick="if (!confirm('Confirma a exclusão?'))
+                                                                     return false"/>
+                                    </div>
+                                </p:column>                                    
+                            </p:dataTable>       
                         </p:tab>
                     </p:tabView>
                     <p:panel>
@@ -132,7 +157,43 @@
                         </div>
                     </p:panel>
                 </h:form>
-            </p:dialog>            
+            </p:dialog>   
+
+            <p:dialog header="Novo arquivo" widgetVar="dlgArquivo" resizable="false"
+                      modal="true" width="60%" height="100%" position="top" >
+                <h:form id="formEdicaoArquivo" prependId="false">                    
+
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="Descrição" for="txtDescricao"/>
+                            <p:inputText value="#{controleProduto.arquivo.descricao}"
+                                         size="50" maxlength="50" id="txtDescricao"
+                                         placeholder="Obrigatório"/>  
+                            <p:outputLabel for="nomeArquivo" value="Arquivo:" />
+                            <p:column  colspan="2" rowspan="1">
+                                <p:inputText id="nomeArquivo"  
+                                             value="#{controleProduto.arquivo.nomeArquivo}" readonly="true" size="100"/>                                                
+                                <p:fileUpload id="uploadVersao"  
+                                              mode="advanced"  
+                                              update="growl nomeArquivo"  
+                                              auto="true"   
+                                              label="Selecionar"
+                                              fileUploadListener="#{controleProduto.enviarArquivo}" />
+                            </p:column>                                       
+                        </p:panelGrid>
+                    </div>
+
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton value="Salvar"
+                                             icon="ui-icon-disk"
+                                             actionListener="#{controleProduto.salvarArquivo()}"
+                                             update="tab:listaArquivos growl"
+                                             oncomplete="if(!args.validationFailed) {PF('dlgArquivo').hide();}"/>                                             
+                        </div>
+                    </p:panel>
+                </h:form>
+            </p:dialog>              
         </ui:define>
 
 
