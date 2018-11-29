@@ -1,15 +1,15 @@
 package br.edu.ifsul.controle;
 
-
 import br.edu.ifsul.dao.MarcaDAO;
 import br.edu.ifsul.dao.ProdutoDAO;
 import br.edu.ifsul.modelo.Arquivo;
 import br.edu.ifsul.modelo.Marca;
 
-
 import br.edu.ifsul.modelo.Produto;
 import br.edu.ifsul.util.Util;
+import br.edu.ifsul.util.UtilRelatorios;
 import java.io.Serializable;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -28,91 +28,94 @@ import org.primefaces.event.FileUploadEvent;
 @Named(value = "controleProduto")
 @ViewScoped
 public class ControleProduto implements Serializable {
-    
+
     @EJB
     private ProdutoDAO<Produto> dao;
     private Produto objeto;
     @EJB
     private MarcaDAO<Marca> daoMarca;
     private Arquivo arquivo;
-    
-    public ControleProduto(){
-        
-    }    
-   
-    public String listar(){
+
+    public ControleProduto() {
+
+    }
+
+    public void imprimirProdutos() {
+        HashMap parametros = new HashMap();
+        UtilRelatorios.imprimeRelatorio("relatorioProdutos", parametros, dao.getListaTodos());
+    }
+
+    public String listar() {
         return "/privado/produto/listar?faces-redirect=true";
     }
-    
-    public void novo(){
-        objeto = new Produto();        
-    }
-    
 
-    
-    public void alterar(Object id){
-        try {
-            objeto = dao.getObjectById(id);            
-        } catch (Exception e){
-            Util.mensagemErro("Erro ao recuperar objeto: " + 
-                    Util.getMensagemErro(e));
-        } 
+    public void novo() {
+        objeto = new Produto();
     }
-    
-    public void excluir(Object id){
+
+    public void alterar(Object id) {
+        try {
+            objeto = dao.getObjectById(id);
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao recuperar objeto: "
+                    + Util.getMensagemErro(e));
+        }
+    }
+
+    public void excluir(Object id) {
         try {
             objeto = dao.getObjectById(id);
             dao.remover(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
-        } catch (Exception e){
-            Util.mensagemErro("Erro ao remover objeto: " + 
-                    Util.getMensagemErro(e));
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao remover objeto: "
+                    + Util.getMensagemErro(e));
         }
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         try {
-            if (objeto.getId() == null){
+            if (objeto.getId() == null) {
                 dao.persist(objeto);
             } else {
                 dao.merge(objeto);
             }
-            Util.mensagemInformacao("Objeto persistido com sucesso!");            
-        } catch(Exception e){
-            Util.mensagemErro("Erro ao persistir objeto: " + 
-                    Util.getMensagemErro(e));
+            Util.mensagemInformacao("Objeto persistido com sucesso!");
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao persistir objeto: "
+                    + Util.getMensagemErro(e));
         }
-    }   
-    
-    public void novoArquivo(){
+    }
+
+    public void novoArquivo() {
         arquivo = new Arquivo();
     }
-    
-    public void salvarArquivo(){
+
+    public void salvarArquivo() {
         objeto.adicionarArquivo(arquivo);
         Util.mensagemInformacao("Arquivo adicionado com sucesso!");
     }
-    
-    public void removerArquivo(int index){
+
+    public void removerArquivo(int index) {
         objeto.removerArquivo(index);
         Util.mensagemInformacao("Arquivo removido com sucesso!");
     }
-    
+
     public void enviarArquivo(FileUploadEvent event) {
         try {
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             FacesContext aFacesContext = FacesContext.getCurrentInstance();
             ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
-            arquivo.setArquivo(event.getFile().getContents());            
+            arquivo.setArquivo(event.getFile().getContents());
             String nomeArquivo = event.getFile().getFileName();
-            nomeArquivo = nomeArquivo.replaceAll("[ ]", "_");            
+            nomeArquivo = nomeArquivo.replaceAll("[ ]", "_");
             arquivo.setNomeArquivo(nomeArquivo);
             Util.mensagemInformacao("Arquivo enviado com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao enviar arquivo: " + Util.getMensagemErro(e));
         }
-    }    
+    }
 
     public void downloadVersao(int index) {
         arquivo = objeto.getArquivos().get(index);
@@ -125,10 +128,10 @@ public class ControleProduto implements Serializable {
             response.getOutputStream().write(download);
             response.getOutputStream().flush();
             FacesContext.getCurrentInstance().responseComplete();
-        } catch (Exception e) {            
-            Util.mensagemErro("Erro no download do arquivo: " +  Util.getMensagemErro(e));
+        } catch (Exception e) {
+            Util.mensagemErro("Erro no download do arquivo: " + Util.getMensagemErro(e));
         }
-    }    
+    }
 
     public ProdutoDAO getDao() {
         return dao;
