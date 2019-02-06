@@ -11,6 +11,7 @@ import br.edu.ifsul.modelo.ContaReceber;
 import br.edu.ifsul.modelo.Equipamento;
 import br.edu.ifsul.modelo.FormaPagamento;
 import br.edu.ifsul.modelo.Foto;
+import br.edu.ifsul.modelo.ItemProduto;
 import br.edu.ifsul.modelo.ItemServico;
 
 import br.edu.ifsul.modelo.OrdemServico;
@@ -62,6 +63,8 @@ public class ControleOrdemServico implements Serializable {
     private ItemServico itemServico;
     private Boolean novoItemServico;
     private Foto foto;
+    private ItemProduto itemProduto;
+    private Boolean novoItemProduto;
 
     public ControleOrdemServico() {
 
@@ -154,8 +157,51 @@ public class ControleOrdemServico implements Serializable {
         for (ItemServico is : objeto.getListaServicos()) {
             total += is.getValorTotal();
         }
+        for (ItemProduto ip : objeto.getListaProdutos()) {
+            total += ip.getValorTotal();
+        }        
+        
         objeto.setValorTotal(total);
     }
+    
+    public void novoItemProduto() {
+        itemProduto = new ItemProduto();
+        novoItemProduto = true;
+    }
+
+    public void alterarItemProduto(int index) {
+        itemProduto = objeto.getListaProdutos().get(index);
+        novoItemProduto = false;
+    }
+
+    public void salvarItemProduto() {
+        if (novoItemProduto) {
+            objeto.adicionarProduto(itemProduto);
+        } else {
+            atualizarValorTotal();
+        }
+        Util.mensagemInformacao("Produto adicionado com sucesso");
+    }
+
+    public void removerItemProduto(int index) {
+        objeto.removerProduto(index);
+        Util.mensagemInformacao("Produto removido com sucesso");
+    }
+
+    public void atualizaValorUnitarioItemProduto() {
+        if (itemProduto != null) {
+            if (itemProduto.getProduto() != null) {
+                itemProduto.setValorUnitario(itemProduto.getProduto().getPreco());
+            }
+        }
+    }
+
+    public void calculaValorTotalItemProduto() {
+        if (itemProduto.getValorUnitario() != null
+                && itemProduto.getQuantidade() != null) {
+            itemProduto.setValorTotal(itemProduto.getValorUnitario() * itemProduto.getQuantidade());
+        }
+    }    
 
     public void gerarParcelas() {
         Boolean temPagamento = false;
@@ -310,6 +356,22 @@ public class ControleOrdemServico implements Serializable {
 
     public void setFoto(Foto foto) {
         this.foto = foto;
+    }
+
+    public ItemProduto getItemProduto() {
+        return itemProduto;
+    }
+
+    public void setItemProduto(ItemProduto itemProduto) {
+        this.itemProduto = itemProduto;
+    }
+
+    public Boolean getNovoItemProduto() {
+        return novoItemProduto;
+    }
+
+    public void setNovoItemProduto(Boolean novoItemProduto) {
+        this.novoItemProduto = novoItemProduto;
     }
 
 }

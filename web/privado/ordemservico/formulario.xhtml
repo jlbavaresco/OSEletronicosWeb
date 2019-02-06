@@ -117,11 +117,11 @@
                         <p:column headerText="Ações">
                             <div align="center">
                                 <p:commandButton icon="ui-icon-pencil"
-                                                 actionListener="#{controleOrdemServico.alterarItemServico(idx)}"  
+                                                 actionListener="#{controleOrdemServico.alterarItemServico(idxServico)}"  
                                                  update=":formItemServico" process="@this"
                                                  oncomplete="PF('dlgItemServico').show();"/> 
                                 <p:commandButton icon="ui-icon-trash"
-                                                 actionListener="#{controleOrdemServico.removerItemServico(idx)}"
+                                                 actionListener="#{controleOrdemServico.removerItemServico(idxServico)}"
                                                  process="@this" update="tab:listaItensServico growl tab:txtValorTotal"
                                                  onclick="if (!confirm('Confirma a exclusão do objeto?'))
                                                              return false"/>  
@@ -130,7 +130,42 @@
                     </p:dataTable>
                 </p:tab>      
                 <p:tab title="Itens de Produtos">
-
+                    <p:dataTable value="#{controleOrdemServico.objeto.listaProdutos}" 
+                                 var="itemProduto" rowIndexVar="idxProduto" id="listaItensProduto">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo Produto" actionListener="#{controleOrdemServico.novoItemProduto()}"
+                                             update=":formItemProduto" icon="ui-icon-plus" process="@this"
+                                             oncomplete="PF('dlgItemProduto').show();"/>
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{itemProduto.id}"/>
+                        </p:column>
+                        <p:column headerText="Produto">
+                            <p:outputLabel value="#{itemProduto.produto.nome}"/>
+                        </p:column>  
+                        <p:column headerText="Quantidade">
+                            <p:outputLabel value="#{itemProduto.quantidade}"/>
+                        </p:column>                                  
+                        <p:column headerText="Valor Unitario">
+                            <p:outputLabel value="#{itemProduto.valorUnitario}"/>
+                        </p:column>                                                                
+                        <p:column headerText="Valor Total">
+                            <p:outputLabel value="#{itemProduto.valorTotal}"/>
+                        </p:column>                                                                
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 actionListener="#{controleOrdemServico.alterarItemProduto(idxProduto)}"  
+                                                 update=":formItemProduto" process="@this"
+                                                 oncomplete="PF('dlgItemProduto').show();"/> 
+                                <p:commandButton icon="ui-icon-trash"
+                                                 actionListener="#{controleOrdemServico.removerItemProduto(idxProduto)}"
+                                                 process="@this" update="tab:listaItensProduto growl tab:txtValorTotal"
+                                                 onclick="if (!confirm('Confirma a exclusão do objeto?'))
+                                                             return false"/>  
+                            </div>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>  
                 <p:tab title="Parcelas">
                     <p:dataTable id="listagemParcelas"
@@ -221,7 +256,7 @@
                     <div align="center">
                         <p:commandButton  value="Salvar" icon="ui-icon-disk"
                                           actionListener="#{controleOrdemServico.salvarItemServico()}"
-                                          update="tab:listaItensServico tab:txtValorTotal growl" 
+                                          update="tab:listaItensServico tab:txtValorTotal tab:txtValorServicos growl" 
                                           process="@form"
                                           oncomplete="if(!args.validationFailed){PF('dlgItemServico').hide();}"/>
                     </div>
@@ -254,6 +289,53 @@
                 <p:outputLabel value="Valor Total" for="txtValorTotalServico"/>
                 <p:inputNumber id="txtValorTotalServico"
                                value="#{controleOrdemServico.itemServico.valorTotal}"
+                               thousandSeparator="" decimalSeparator="." decimalPlaces="2" size="10"/>                 
+            </p:panelGrid>	               
+        </h:form>
+        <ui:include src="/templates/ajaxstatus.xhtml"/>
+    </p:dialog>     
+    
+    <p:dialog header="Edição de Item de Produto" widgetVar="dlgItemProduto" resizable="false" modal="true">
+        <h:form id="formItemProduto">
+            <p:growl />
+            <p:panelGrid columns="2">
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton  value="Salvar" icon="ui-icon-disk"
+                                          actionListener="#{controleOrdemServico.salvarItemProduto()}"
+                                          update="tab:listaItensProduto tab:txtValorTotal tab:txtValorProdutos growl" 
+                                          process="@form"
+                                          oncomplete="if(!args.validationFailed){PF('dlgItemProduto').hide();}"/>
+                    </div>
+                </f:facet> 
+                <p:outputLabel value="ID"/>
+                <p:inputText value="#{controleOrdemServico.itemProduto.id}" readonly="true"
+                             size="10"/>  
+                <p:outputLabel value="Produto" for="selectProduto"/>
+                <p:selectOneMenu value="#{controleOrdemServico.itemProduto.produto}"
+                                 id="selectProduto">		      
+                    <f:converter binding="#{converterProduto}" />
+                    <f:selectItem itemLabel="Selecione um registro" noSelectionOption="true"/>
+                    <f:selectItems value="#{controleOrdemServico.daoProduto.listaTodos}"
+                                   var="p" itemLabel="#{p.nome}"/>
+                    <p:ajax update="txtValorUnitarioProduto" 
+                            listener="#{controleOrdemServico.atualizaValorUnitarioItemProduto()}" /> 
+                </p:selectOneMenu>     
+                <p:outputLabel value="Quantidade" for="txtQuantidadeProduto"/>
+                <p:inputNumber id="txtQuantidadeProduto"
+                               value="#{controleOrdemServico.itemProduto.quantidade}"
+                               thousandSeparator="" decimalSeparator="." decimalPlaces="2" size="10">
+                    <p:ajax update="txtValorTotalProduto" 
+                            listener="#{controleOrdemServico.calculaValorTotalItemProduto()}"
+                            event="keyup"/>
+                </p:inputNumber>
+                <p:outputLabel value="Valor Unitário" for="txtValorUnitarioProduto"/>
+                <p:inputNumber id="txtValorUnitarioProduto"
+                               value="#{controleOrdemServico.itemProduto.valorUnitario}"
+                               thousandSeparator="" decimalSeparator="." decimalPlaces="2" size="10"/>   
+                <p:outputLabel value="Valor Total" for="txtValorTotalProduto"/>
+                <p:inputNumber id="txtValorTotalProduto"
+                               value="#{controleOrdemServico.itemProduto.valorTotal}"
                                thousandSeparator="" decimalSeparator="." decimalPlaces="2" size="10"/>                 
             </p:panelGrid>	               
         </h:form>
