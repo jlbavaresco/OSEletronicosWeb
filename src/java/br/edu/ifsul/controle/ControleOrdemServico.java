@@ -7,6 +7,7 @@ import br.edu.ifsul.dao.ProdutoDAO;
 import br.edu.ifsul.dao.ServicoDAO;
 import br.edu.ifsul.dao.UsuarioDAO;
 import br.edu.ifsul.modelo.Arquivo;
+import br.edu.ifsul.modelo.ContaReceber;
 import br.edu.ifsul.modelo.Equipamento;
 import br.edu.ifsul.modelo.FormaPagamento;
 import br.edu.ifsul.modelo.Foto;
@@ -157,8 +158,20 @@ public class ControleOrdemServico implements Serializable {
     }
 
     public void gerarParcelas() {
-        objeto.getContasReceber().clear();
-        objeto.gerarContasReceber();
+        Boolean temPagamento = false;
+        for (ContaReceber c : objeto.getContasReceber()) {
+            if (c.getDataPagamento() != null || c.getValorPago() != null) {
+                temPagamento = true;
+            }
+        }
+        if (temPagamento) {
+            Util.mensagemErro("Parcelas não podem ser geradas novamente "
+                    + "por já existir pelo menos um pagamento");
+        } else {
+            objeto.getContasReceber().clear();
+            objeto.gerarContasReceber();
+            Util.mensagemInformacao("Parcelas Geradas com sucesso");
+        }
     }
 
     public void novaFoto() {
