@@ -1,6 +1,6 @@
 package br.edu.ifsul.converters;
 
-import br.edu.ifsul.modelo.Usuario;
+import br.edu.ifsul.modelo.Equipamento;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -16,9 +16,9 @@ import javax.persistence.PersistenceContext;
  * @email jorge.bavaresco@passofundo.ifsul.edu.br
  * @organization IFSUL - Campus Passo Fundo
  */
-@Named(value = "converterUsuario") 
+@Named(value = "converterEquipamento") 
 @RequestScoped
-public class ConverterUsuario implements Serializable, Converter {
+public class ConverterEquipamento implements Serializable, Converter {
     
     @PersistenceContext(unitName = "OSEletronicosWebPU")
     private EntityManager em;
@@ -28,7 +28,7 @@ public class ConverterUsuario implements Serializable, Converter {
         if (string == null || string.equals("Selecione um registro")){
             return null;
         }
-        return em.find(Usuario.class,string);
+        return em.find(Equipamento.class, Integer.parseInt(string));
     }
 
     @Override
@@ -36,8 +36,8 @@ public class ConverterUsuario implements Serializable, Converter {
         if (o == null){
             return null;
         }
-        Usuario obj = (Usuario) o;
-        return obj.getNomeUsuario();
+        Equipamento obj = (Equipamento) o;
+        return obj.getId().toString();
     }
 
 }

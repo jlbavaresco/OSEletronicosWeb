@@ -37,7 +37,7 @@ public class ConverterPessoaFisica implements Serializable, Converter {
             return null;
         }
         PessoaFisica obj = (PessoaFisica) o;
-        return obj.getNome();
+        return obj.getNomeUsuario();
     }
 
 }

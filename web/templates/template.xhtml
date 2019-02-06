@@ -39,9 +39,18 @@
                             <p:menuitem action="#{controlePessoaFisica.listar()}"
                                         value="Manutenção de Pessoas Físicas"
                                         ajax="false"/>   
-                        </p:submenu>                        
+                        </p:submenu>                           
                     </p:column>
                 </p:submenu>   
+                <p:submenu label="Negócios">
+                    <p:column>   
+                        <p:submenu label="Ordens de Serviço">
+                            <p:menuitem action="#{controleOrdemServico.listar()}"
+                                        value="Manutenção de Ordens de Serviço"
+                                        ajax="false"/>    
+                        </p:submenu>                         
+                    </p:column>
+                </p:submenu>                 
                 <p:submenu label="Relatórios">
                     <p:column>
                         <p:submenu label="Básicos">
