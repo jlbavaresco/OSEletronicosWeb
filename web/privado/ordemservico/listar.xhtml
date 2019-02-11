@@ -94,6 +94,10 @@
                                              title="Remover"
                                              onclick="if (!confirm('Confirma a exclusão?'))
                                                          return false"/>
+                            <p:commandButton actionListener="#{controleOrdemServico.imprimeOS(obj.id)}"
+                                             icon="ui-icon-print"
+                                             ajax="false" title="Imprimir"
+                                             onclick="this.form.target='_blank';"/>                            
                         </div>
                     </p:column>
                 </p:dataTable>

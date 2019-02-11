@@ -110,7 +110,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="35" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<rectangle>
 				<reportElement style="vencida" stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="30" uuid="b8e604d7-45c7-49ff-9dc3-b8111b2e38a8"/>
 			</rectangle>

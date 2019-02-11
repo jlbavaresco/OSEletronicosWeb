@@ -21,9 +21,12 @@ import br.edu.ifsul.modelo.Servico;
 import br.edu.ifsul.modelo.Status;
 import br.edu.ifsul.modelo.Usuario;
 import br.edu.ifsul.util.Util;
+import br.edu.ifsul.util.UtilRelatorios;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -72,6 +75,20 @@ public class ControleOrdemServico implements Serializable {
 
     public String listar() {
         return "/privado/ordemservico/listar?faces-redirect=true";
+    }
+
+    public void imprimeOS(Integer id) {
+        try {
+            objeto = dao.getObjectById(id);
+            // Deve-se criar uma lista com um único objeto OS
+            List<OrdemServico> listaOS = new ArrayList<>();
+            listaOS.add(objeto);
+            HashMap parametros = new HashMap();
+            UtilRelatorios.imprimeRelatorio("relatorioOrdemServico", parametros, listaOS);
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao imprimir: "
+                    + Util.getMensagemErro(e));
+        }
     }
 
     public void novo() {
@@ -159,11 +176,11 @@ public class ControleOrdemServico implements Serializable {
         }
         for (ItemProduto ip : objeto.getListaProdutos()) {
             total += ip.getValorTotal();
-        }        
-        
+        }
+
         objeto.setValorTotal(total);
     }
-    
+
     public void novoItemProduto() {
         itemProduto = new ItemProduto();
         novoItemProduto = true;
@@ -201,7 +218,7 @@ public class ControleOrdemServico implements Serializable {
                 && itemProduto.getQuantidade() != null) {
             itemProduto.setValorTotal(itemProduto.getValorUnitario() * itemProduto.getQuantidade());
         }
-    }    
+    }
 
     public void gerarParcelas() {
         Boolean temPagamento = false;
