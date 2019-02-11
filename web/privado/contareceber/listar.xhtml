@@ -10,6 +10,11 @@
         <ui:define name="conteudo">
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
+                <p:commandButton value="Imprimir"
+                                 icon="ui-icon-print"
+                                 action="#{controleContaReceber.imprimirContas()}"
+                                 ajax="false"
+                                 onclick="this.form.target = '_blank';"/>
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>

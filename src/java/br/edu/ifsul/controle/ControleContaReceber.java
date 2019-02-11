@@ -9,7 +9,9 @@ import br.edu.ifsul.modelo.ContaReceber;
 import br.edu.ifsul.modelo.ContaReceberID;
 import br.edu.ifsul.modelo.Estado;
 import br.edu.ifsul.util.Util;
+import br.edu.ifsul.util.UtilRelatorios;
 import java.io.Serializable;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -32,6 +34,11 @@ public class ControleContaReceber implements Serializable {
     public ControleContaReceber(){
         
     }
+    
+    public void imprimirContas() {
+        HashMap parametros = new HashMap();
+        UtilRelatorios.imprimeRelatorio("relatorioContas", parametros, dao.getListaObjetos());
+    }    
        
     public String listar(){
         return "/privado/contareceber/listar?faces-redirect=true";
