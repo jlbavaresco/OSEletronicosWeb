@@ -11,9 +11,10 @@
     </h:head>
     <h:body>
         <h:form id="formMenu" prependId="false">
+            <p:growl/>
             <p:megaMenu>
                 <p:menuitem value="Inicio" url="/index.xhtml" icon="ui-icon-home"/>
-                <p:submenu label="Cadastros">
+                <p:submenu label="Cadastros" rendered="#{controleLogin.usuarioAutenticado != null}">
                     <p:column>
                         <p:submenu label="Básicos">
                             <p:menuitem action="#{controleCidade.listar()}"
@@ -42,7 +43,7 @@
                         </p:submenu>                           
                     </p:column>
                 </p:submenu>   
-                <p:submenu label="Negócios">
+                <p:submenu label="Negócios" rendered="#{controleLogin.usuarioAutenticado != null}">
                     <p:column>   
                         <p:submenu label="Ordens de Serviço">
                             <p:menuitem action="#{controleOrdemServico.listar()}"
@@ -54,25 +55,39 @@
                         </p:submenu>                         
                     </p:column>
                 </p:submenu>                 
-                <p:submenu label="Relatórios">
+                <p:submenu label="Relatórios" rendered="#{controleLogin.usuarioAutenticado != null}">
                     <p:column>
                         <p:submenu label="Básicos">
                             <p:menuitem action="#{controleProduto.imprimirProdutos()}"
                                         value="Produtos"
                                         ajax="false"
                                         target="_blank"/>
-                           
+
                         </p:submenu>
                         <p:submenu label="Contas">
                             <p:menuitem action="#{controleContaReceber.imprimirContas()}"
                                         value="Contas a Receber"
                                         ajax="false"
                                         target="_blank"/>
-                           
+
                         </p:submenu>                        
-                           
+
                     </p:column>
-                </p:submenu>                 
+                </p:submenu>   
+                <p:submenu label="Usuario: #{controleLogin.usuarioAutenticado != null ? controleLogin.usuarioAutenticado.nome : ''}" >
+                    <p:column>
+                        <p:submenu label="Efetuar login" rendered="#{controleLogin.usuarioAutenticado == null}">
+                            <p:menuitem action="#{controleLogin.paginaLogin()}"
+                                        value="Login"
+                                        ajax="false"/>
+                        </p:submenu>
+                        <p:submenu label="Efetuar logout" rendered="#{controleLogin.usuarioAutenticado != null}">
+                            <p:menuitem action="#{controleLogin.efetuarLogout()}"
+                                        value="Logout"
+                                        ajax="false"/>
+                        </p:submenu>                      
+                    </p:column>
+                </p:submenu>                  
             </p:megaMenu>            
         </h:form>
         <ui:insert name="conteudo">

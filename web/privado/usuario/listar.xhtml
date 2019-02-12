@@ -76,7 +76,8 @@
                                              process="@this"
                                              title="Remover"
                                              onclick="if (!confirm('Confirma a exclusão?'))
-                                                         return false"/>
+                                                         return false"
+                                             rendered="#{p:ifGranted('ADMINISTRADOR')}"/>
                         </div>
                     </p:column>
                 </p:dataTable>
