@@ -11,7 +11,7 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo" actionListener="#{controlePessoaFisica.novo()}"
-                                 icon="ui-icon-plus"
+                                 icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
                                  oncomplete="PF('dlg').show();"/>
@@ -28,21 +28,21 @@
                         <p:inputText value="#{controlePessoaFisica.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:commandButton value="Filtrar" update="listagem" icon="pi pi-search"/>
                         <p:outputLabel value="Máximo de Objetos"/>
                         <p:inputNumber value="#{controlePessoaFisica.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/> 
                         </p:inputNumber>
                         <p:commandButton action="#{controlePessoaFisica.dao.primeiro()}" 
-                                         title="Primeiro" icon="ui-icon-seek-first" update="listagem"/>
+                                         title="Primeiro" icon="pi pi-step-backward" update="listagem"/>
                         <p:commandButton action="#{controlePessoaFisica.dao.anterior()}" 
-                                         title="Anterior" icon="ui-icon-seek-prev" 
+                                         title="Anterior" icon="pi pi-chevron-left" 
                                          update="listagem"/>
                         <p:commandButton action="#{controlePessoaFisica.dao.proximo()}" 
-                                         title="Proximo" icon="ui-icon-seek-next" update="listagem"/>
+                                         title="Proximo" icon="pi pi-chevron-right" update="listagem"/>
                         <p:commandButton action="#{controlePessoaFisica.dao.ultimo()}" 
-                                         title="Ultimo" icon="ui-icon-seek-end" update="listagem"/>                          
+                                         title="Ultimo" icon="pi pi-step-forward" update="listagem"/>                          
                     </p:panelGrid>
                 </div>
                 <p:dataTable value="#{controlePessoaFisica.dao.listaObjetos}" var="obj"
@@ -71,13 +71,13 @@
                     <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton actionListener="#{controlePessoaFisica.alterar(obj.nomeUsuario)}"
-                                             icon="ui-icon-pencil"
+                                             icon="pi pi-pencil"
                                              title="Editar"
                                              update="formEdicao"
                                              process="@this"
                                              oncomplete="PF('dlg').show();"/>
                             <p:commandButton actionListener="#{controlePessoaFisica.excluir(obj.nomeUsuario)}"
-                                             icon="ui-icon-trash"
+                                             icon="pi pi-trash"
                                              update="@form"
                                              process="@this"
                                              title="Remover"
@@ -88,9 +88,9 @@
                 </p:dataTable>
             </h:form>
             <p:dialog header="Edição" widgetVar="dlg" resizable="false"
-                      modal="true" width="50%" height="100%">
+                      modal="true" width="50%" height="100%" responsive="true">
                 <h:form id="formEdicao" prependId="false">
-                    <p:growl id="growl"/>
+                    <p:growl id="growl"/>                    
                     <p:tabView id="tab">
                         <p:tab title="Dados Principais">
                             <div align="center">
@@ -135,6 +135,13 @@
                                                  id="txtTelefoneAlternativo"
                                                  size="14" mask="(99)9999-9999?9" 
                                                  maxlength="14" /> 
+
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        <p:tab title="Endereço">
+                            <div align="center">
+                                <p:panelGrid columns="2">
                                     <p:outputLabel value="Endereço" for="txtEndereco"/>
                                     <p:inputText id="txtEndereco" value="#{controlePessoaFisica.objeto.endereco}"
                                                  size="50" maxlength="50" placeholder="Obrigatório"/>                        
@@ -160,15 +167,15 @@
                                         <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro"/>
                                         <f:selectItems value="#{controlePessoaFisica.daoCidade.listaTodos}"
                                                        var="c" itemLabel="#{c.nome}"/>
-                                    </p:selectOneMenu>                                    
-                                </p:panelGrid>
+                                    </p:selectOneMenu>   
+                                </p:panelGrid>    
                             </div>
                         </p:tab>
                         <p:tab title="Permissões">
                             <p:dataTable value="#{controlePessoaFisica.objeto.permissoes}"
                                          var="per" id="listaPermissoes">
-                                <f:facet name="header">
-                                    <p:panelGrid columns="3">
+                                <f:facet name="header">                                    
+                                    <p:panelGrid columns="3" id="painelPermissao">
                                         <p:outputLabel value="Permissão"/>
                                         <p:selectOneMenu value="#{controlePessoaFisica.permissao}"
                                                          id="selectPermissao">
@@ -177,13 +184,13 @@
                                             <f:selectItems value="#{controlePessoaFisica.daoPermissao.listaTodos}" var="p"
                                                            itemLabel="#{p.nome}"/>
                                         </p:selectOneMenu>
-                                        <p:commandButton value="Adicionar"
+                                        <p:commandButton value="Adicionar"                                                     
                                                          actionListener="#{controlePessoaFisica.salvarPermissao()}"
                                                          update="listaPermissoes growl"
                                                          id="btnAdicionarPermissao"
                                                          process="btnAdicionarPermissao selectPermissao"
-                                                         icon="ui-icon-plus"/>
-                                    </p:panelGrid>
+                                                         icon="pi pi-plus"/>
+                                    </p:panelGrid>                                  
                                 </f:facet>
                                 <p:column headerText="Nome">
                                     <p:outputLabel value="#{per.nome}"/>
@@ -196,7 +203,7 @@
                                         <p:commandButton id="btnRemoverPermissao"
                                                          actionListener="#{controlePessoaFisica.excluirPermissao(per)}"
                                                          process="btnRemoverPermissao" update="listaPermissoes growl"
-                                                         icon="ui-icon-trash"
+                                                         icon="pi pi-trash"
                                                          onclick="if (!confirm('Confirma a remoção da permissão?'))
                                                                      return false"/>
                                     </div>
@@ -207,7 +214,7 @@
                     <p:panel>
                         <div align="center">
                             <p:commandButton value="Salvar"
-                                             icon="ui-icon-disk"
+                                             icon="pi pi-save"
                                              actionListener="#{controlePessoaFisica.salvar()}"
                                              update="formEdicao formListagem"
                                              oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>                                             

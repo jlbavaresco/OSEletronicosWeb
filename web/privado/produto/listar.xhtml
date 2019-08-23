@@ -11,7 +11,7 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo" actionListener="#{controleProduto.novo()}"
-                                 icon="ui-icon-plus"
+                                 icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
                                  oncomplete="PF('dlg').show();"/>
@@ -33,21 +33,21 @@
                         <p:inputText value="#{controleProduto.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:commandButton value="Filtrar" update="listagem" icon="pi pi-search"/>
                         <p:outputLabel value="Máximo de Objetos"/>
                         <p:inputNumber value="#{controleProduto.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/> 
                         </p:inputNumber>
                         <p:commandButton action="#{controleProduto.dao.primeiro()}" 
-                                         title="Primeiro" icon="ui-icon-seek-first" update="listagem"/>
+                                         title="Primeiro" icon="pi pi-step-backward" update="listagem"/>
                         <p:commandButton action="#{controleProduto.dao.anterior()}" 
-                                         title="Anterior" icon="ui-icon-seek-prev" 
+                                         title="Anterior" icon="pi pi-chevron-left" 
                                          update="listagem"/>
                         <p:commandButton action="#{controleProduto.dao.proximo()}" 
-                                         title="Proximo" icon="ui-icon-seek-next" update="listagem"/>
+                                         title="Proximo" icon="pi pi-chevron-right" update="listagem"/>
                         <p:commandButton action="#{controleProduto.dao.ultimo()}" 
-                                         title="Ultimo" icon="ui-icon-seek-end" update="listagem"/>                          
+                                         title="Ultimo" icon="pi pi-step-forward" update="listagem"/>                          
                     </p:panelGrid>
                 </div>
                 <p:dataTable value="#{controleProduto.dao.listaObjetos}" var="obj"
@@ -73,13 +73,13 @@
                     <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton actionListener="#{controleProduto.alterar(obj.id)}"
-                                             icon="ui-icon-pencil"
+                                             icon="pi pi-pencil"
                                              title="Editar"
                                              update="formEdicao"
                                              process="@this"
                                              oncomplete="PF('dlg').show();"/>
                             <p:commandButton actionListener="#{controleProduto.excluir(obj.id)}"
-                                             icon="ui-icon-trash"
+                                             icon="pi pi-trash"
                                              update="@form"
                                              process="@this"
                                              title="Remover"
@@ -124,7 +124,7 @@
                             </div>
                         </p:tab>
                         <p:tab title="Arquivos">
-                            <p:commandButton value="Novo arquivo" icon="ui-icon-plus"
+                            <p:commandButton value="Novo arquivo" icon="pi pi-plus"
                                              actionListener="#{controleProduto.novoArquivo()}"
                                              update="formEdicaoArquivo"
                                              process="@this"
@@ -141,7 +141,7 @@
                                 <p:column headerText="Ações" width="15%">
                                     <div align="center">
                                         <p:commandButton actionListener="#{controleProduto.removerArquivo(idxArq)}"
-                                                         icon="ui-icon-trash"
+                                                         icon="pi pi-trash"
                                                          update="listaArquivos growl"
                                                          process="@this"
                                                          title="Remover arquivo"
@@ -155,7 +155,7 @@
                     <p:panel>
                         <div align="center">
                             <p:commandButton value="Salvar"
-                                             icon="ui-icon-disk"
+                                             icon="pi pi-save"
                                              actionListener="#{controleProduto.salvar()}"
                                              update="formEdicao formListagem"
                                              oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>                                             
@@ -191,7 +191,7 @@
                     <p:panel>
                         <div align="center">
                             <p:commandButton value="Salvar"
-                                             icon="ui-icon-disk"
+                                             icon="pi pi-save"
                                              actionListener="#{controleProduto.salvarArquivo()}"
                                              update="tab:listaArquivos growl"
                                              oncomplete="if(!args.validationFailed) {PF('dlgArquivo').hide();}"/>                                             

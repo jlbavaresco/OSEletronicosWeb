@@ -11,7 +11,7 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo" actionListener="#{controleOrdemServico.novo()}"
-                                 icon="ui-icon-plus"
+                                 icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
                                  oncomplete="PF('dlg').show();"/>
@@ -19,7 +19,7 @@
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
                         <p:selectOneMenu value="#{controleOrdemServico.dao.ordemAtual}" id="selectOrdem"
-                                         converter="#{controleOrdemServico.dao.converterOrdem}">                            
+                                         converter="#{controleOrdemServico.dao.converterOrdem}"> 
                             <f:selectItems value="#{controleOrdemServico.dao.listaOrdem}"
                                            var="ord" itemValue="#{ord.atributo}"/>
                             <p:ajax update="listagem"/>
@@ -28,21 +28,21 @@
                         <p:inputText value="#{controleOrdemServico.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:commandButton value="Filtrar" update="listagem" icon="pi pi-search"/>
                         <p:outputLabel value="Máximo de Objetos"/>
                         <p:inputNumber value="#{controleOrdemServico.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/> 
                         </p:inputNumber>
                         <p:commandButton action="#{controleOrdemServico.dao.primeiro()}" 
-                                         title="Primeiro" icon="ui-icon-seek-first" update="listagem"/>
+                                         title="Primeiro" icon="pi pi-step-backward" update="listagem"/>
                         <p:commandButton action="#{controleOrdemServico.dao.anterior()}" 
-                                         title="Anterior" icon="ui-icon-seek-prev" 
+                                         title="Anterior" icon="pi pi-chevron-left" 
                                          update="listagem"/>
                         <p:commandButton action="#{controleOrdemServico.dao.proximo()}" 
-                                         title="Proximo" icon="ui-icon-seek-next" update="listagem"/>
+                                         title="Proximo" icon="pi pi-chevron-right" update="listagem"/>
                         <p:commandButton action="#{controleOrdemServico.dao.ultimo()}" 
-                                         title="Ultimo" icon="ui-icon-seek-end" update="listagem"/>                          
+                                         title="Ultimo" icon="pi pi-step-forward" update="listagem"/>                          
                     </p:panelGrid>
                 </div>
                 <p:dataTable value="#{controleOrdemServico.dao.listaObjetos}" var="obj"
@@ -82,20 +82,20 @@
                     <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton actionListener="#{controleOrdemServico.alterar(obj.id)}"
-                                             icon="ui-icon-pencil"
+                                             icon="pi pi-pencil"
                                              title="Editar"
                                              update="formEdicao"
                                              process="@this"
                                              oncomplete="PF('dlg').show();"/>
                             <p:commandButton actionListener="#{controleOrdemServico.excluir(obj.id)}"
-                                             icon="ui-icon-trash"
+                                             icon="pi pi-trash"
                                              update="@form"
                                              process="@this"
                                              title="Remover"
                                              onclick="if (!confirm('Confirma a exclusão?'))
                                                          return false"/>
-                            <p:commandButton actionListener="#{controleOrdemServico.imprimeOS(obj.id)}"
-                                             icon="ui-icon-print"
+                            <p:commandButton action="#{controleOrdemServico.imprimeOS(obj.id)}"
+                                             icon="pi pi-print"
                                              ajax="false" title="Imprimir"
                                              onclick="this.form.target='_blank';"/>                            
                         </div>

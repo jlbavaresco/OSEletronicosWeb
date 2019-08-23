@@ -86,6 +86,8 @@ public class ControleOrdemServico implements Serializable {
             HashMap parametros = new HashMap();
             UtilRelatorios.imprimeRelatorio("relatorioOrdemServico", parametros, listaOS);
         } catch (Exception e) {
+            System.out.println("Erro do imprimeOS: " + e.getMessage());
+            e.printStackTrace();
             Util.mensagemErro("Erro ao imprimir: "
                     + Util.getMensagemErro(e));
         }

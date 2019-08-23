@@ -96,7 +96,7 @@
                                  var="itemServico" rowIndexVar="idxServico" id="listaItensServico">
                         <f:facet name="header">
                             <p:commandButton value="Novo Serviço" actionListener="#{controleOrdemServico.novoItemServico()}"
-                                             update=":formItemServico" icon="ui-icon-plus" process="@this"
+                                             update=":formItemServico" icon="pi pi-plus" process="@this"
                                              oncomplete="PF('dlgItemServico').show();"/>
                         </f:facet>
                         <p:column headerText="ID">
@@ -116,11 +116,11 @@
                         </p:column>                                                                
                         <p:column headerText="Ações">
                             <div align="center">
-                                <p:commandButton icon="ui-icon-pencil"
+                                <p:commandButton icon="pi pi-pencil"
                                                  actionListener="#{controleOrdemServico.alterarItemServico(idxServico)}"  
                                                  update=":formItemServico" process="@this"
                                                  oncomplete="PF('dlgItemServico').show();"/> 
-                                <p:commandButton icon="ui-icon-trash"
+                                <p:commandButton icon="pi pi-trash"
                                                  actionListener="#{controleOrdemServico.removerItemServico(idxServico)}"
                                                  process="@this" update="tab:listaItensServico growl tab:txtValorTotal"
                                                  onclick="if (!confirm('Confirma a exclusão do objeto?'))
@@ -134,7 +134,7 @@
                                  var="itemProduto" rowIndexVar="idxProduto" id="listaItensProduto">
                         <f:facet name="header">
                             <p:commandButton value="Novo Produto" actionListener="#{controleOrdemServico.novoItemProduto()}"
-                                             update=":formItemProduto" icon="ui-icon-plus" process="@this"
+                                             update=":formItemProduto" icon="pi pi-plus" process="@this"
                                              oncomplete="PF('dlgItemProduto').show();"/>
                         </f:facet>
                         <p:column headerText="ID">
@@ -154,11 +154,11 @@
                         </p:column>                                                                
                         <p:column headerText="Ações">
                             <div align="center">
-                                <p:commandButton icon="ui-icon-pencil"
+                                <p:commandButton icon="pi pi-pencil"
                                                  actionListener="#{controleOrdemServico.alterarItemProduto(idxProduto)}"  
                                                  update=":formItemProduto" process="@this"
                                                  oncomplete="PF('dlgItemProduto').show();"/> 
-                                <p:commandButton icon="ui-icon-trash"
+                                <p:commandButton icon="pi pi-trash"
                                                  actionListener="#{controleOrdemServico.removerItemProduto(idxProduto)}"
                                                  process="@this" update="tab:listaItensProduto growl tab:txtValorTotal"
                                                  onclick="if (!confirm('Confirma a exclusão do objeto?'))
@@ -202,7 +202,7 @@
                     </p:dataTable>
                 </p:tab>   
                 <p:tab title="Fotos">
-                    <p:commandButton value="Novo arquivo" icon="ui-icon-plus"
+                    <p:commandButton value="Novo arquivo" icon="pi pi-plus"
                                      actionListener="#{controleOrdemServico.novaFoto()}"
                                      update="formEdicaoFoto"
                                      process="@this"
@@ -219,14 +219,14 @@
                         <p:column headerText="Ações" width="15%">
                             <div align="center">
                                 <p:commandButton actionListener="#{controleOrdemServico.removerFoto(idxFot)}"
-                                                 icon="ui-icon-trash"
+                                                 icon="pi pi-trash"
                                                  update="listaFotos growl"
                                                  process="@this"
                                                  title="Remover arquivo"
                                                  onclick="if (!confirm('Confirma a exclusão?'))
                                                              return false"/>                                
                                 <p:commandButton actionListener="#{controleOrdemServico.visualizarFoto(idxFot)}"
-                                                 icon="ui-icon-zoomin"
+                                                 icon="pi pi-eye"
                                                  update="formVerFoto"
                                                  process="@this"
                                                  title="Visualizar foto"
@@ -239,7 +239,7 @@
             <p:panel>
                 <div align="center">
                     <p:commandButton value="Salvar"
-                                     icon="ui-icon-disk"
+                                     icon="pi pi-save"
                                      actionListener="#{controleOrdemServico.salvar()}"
                                      update="formEdicao formListagem"
                                      oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>                                             
@@ -254,7 +254,7 @@
             <p:panelGrid columns="2">
                 <f:facet name="footer">
                     <div align="center">
-                        <p:commandButton  value="Salvar" icon="ui-icon-disk"
+                        <p:commandButton  value="Salvar" icon="pi pi-save"
                                           actionListener="#{controleOrdemServico.salvarItemServico()}"
                                           update="tab:listaItensServico tab:txtValorTotal tab:txtValorServicos growl" 
                                           process="@form"
@@ -301,7 +301,7 @@
             <p:panelGrid columns="2">
                 <f:facet name="footer">
                     <div align="center">
-                        <p:commandButton  value="Salvar" icon="ui-icon-disk"
+                        <p:commandButton  value="Salvar" icon="pi pi-save"
                                           actionListener="#{controleOrdemServico.salvarItemProduto()}"
                                           update="tab:listaItensProduto tab:txtValorTotal tab:txtValorProdutos growl" 
                                           process="@form"
@@ -369,7 +369,7 @@
             <p:panel>
                 <div align="center">
                     <p:commandButton value="Salvar"
-                                     icon="ui-icon-disk"
+                                     icon="pi pi-save"
                                      actionListener="#{controleOrdemServico.salvarFoto()}"
                                      update="tab:listaFotos growl"
                                      oncomplete="if(!args.validationFailed) {PF('dlgFoto').hide();}"/>                                             

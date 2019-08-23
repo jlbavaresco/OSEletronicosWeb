@@ -13,7 +13,7 @@
         <h:form id="formMenu" prependId="false">
             <p:growl/>
             <p:megaMenu>
-                <p:menuitem value="Inicio" url="/index.xhtml" icon="ui-icon-home"/>
+                <p:menuitem value="Inicio" url="#{facesContext.externalContext.requestContextPath}/index.xhtml" icon="pi pi-home"/>
                 <p:submenu label="Cadastros" rendered="#{controleLogin.usuarioAutenticado != null}">
                     <p:column>
                         <p:submenu label="Básicos">

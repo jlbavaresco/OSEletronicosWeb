@@ -11,7 +11,7 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo" actionListener="#{controleUsuario.novo()}"
-                                 icon="ui-icon-plus"
+                                 icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
                                  oncomplete="PF('dlg').show();"/>
@@ -28,21 +28,21 @@
                         <p:inputText value="#{controleUsuario.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:commandButton value="Filtrar" update="listagem" icon="pi pi-search"/>
                         <p:outputLabel value="Máximo de Objetos"/>
                         <p:inputNumber value="#{controleUsuario.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/> 
                         </p:inputNumber>
                         <p:commandButton action="#{controleUsuario.dao.primeiro()}" 
-                                         title="Primeiro" icon="ui-icon-seek-first" update="listagem"/>
+                                         title="Primeiro" icon="pi pi-step-backward" update="listagem"/>
                         <p:commandButton action="#{controleUsuario.dao.anterior()}" 
-                                         title="Anterior" icon="ui-icon-seek-prev" 
+                                         title="Anterior" icon="pi pi-chevron-left" 
                                          update="listagem"/>
                         <p:commandButton action="#{controleUsuario.dao.proximo()}" 
-                                         title="Proximo" icon="ui-icon-seek-next" update="listagem"/>
+                                         title="Proximo" icon="pi pi-chevron-right" update="listagem"/>
                         <p:commandButton action="#{controleUsuario.dao.ultimo()}" 
-                                         title="Ultimo" icon="ui-icon-seek-end" update="listagem"/>                          
+                                         title="Ultimo" icon="pi pi-step-forward" update="listagem"/>                          
                     </p:panelGrid>
                 </div>
                 <p:dataTable value="#{controleUsuario.dao.listaObjetos}" var="obj"
@@ -65,13 +65,13 @@
                     <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton actionListener="#{controleUsuario.alterar(obj.nomeUsuario)}"
-                                             icon="ui-icon-pencil"
+                                             icon="pi pi-pencil"
                                              title="Editar"
                                              update="formEdicao"
                                              process="@this"
                                              oncomplete="PF('dlg').show();"/>
                             <p:commandButton actionListener="#{controleUsuario.excluir(obj.nomeUsuario)}"
-                                             icon="ui-icon-trash"
+                                             icon="pi pi-trash"
                                              update="@form"
                                              process="@this"
                                              title="Remover"
@@ -145,7 +145,7 @@
                                                          update="listaPermissoes growl"
                                                          id="btnAdicionarPermissao"
                                                          process="btnAdicionarPermissao selectPermissao"
-                                                         icon="ui-icon-plus"/>
+                                                         icon="pi pi-plus"/>
                                     </p:panelGrid>
                                 </f:facet>
                                 <p:column headerText="Nome">
@@ -159,7 +159,7 @@
                                         <p:commandButton id="btnRemoverPermissao"
                                                          actionListener="#{controleUsuario.excluirPermissao(per)}"
                                                          process="btnRemoverPermissao" update="listaPermissoes growl"
-                                                         icon="ui-icon-trash"
+                                                         icon="pi pi-trash"
                                                          onclick="if (!confirm('Confirma a remoção da permissão?'))
                                                                      return false"/>
                                     </div>
@@ -170,7 +170,7 @@
                     <p:panel>
                         <div align="center">
                             <p:commandButton value="Salvar"
-                                             icon="ui-icon-disk"
+                                             icon="pi pi-save"
                                              actionListener="#{controleUsuario.salvar()}"
                                              update="formEdicao formListagem"
                                              oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>                                             

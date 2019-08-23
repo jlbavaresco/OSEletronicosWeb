@@ -3,17 +3,19 @@ package br.edu.ifsul.converters;
 import br.edu.ifsul.dao.Ordem;
 import java.io.Serializable;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
+import javax.inject.Named;
 
 /**
  * @author Prof. Me. Jorge Luis Boeira Bavaresco
  * @email jorge.bavaresco@passofundo.ifsul.edu.br
  * @organization IFSUL - Campus Passo Fundo
  */
-@FacesConverter(value = "converterOrdem")
+@Named(value = "converterOrdem")
+@RequestScoped
 public class ConverterOrdem implements Serializable, Converter {
 
     private List<Ordem> listaOrdem;
@@ -23,7 +25,7 @@ public class ConverterOrdem implements Serializable, Converter {
     }
 
     @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String string) {        
+    public Object getAsObject(FacesContext context, UIComponent component, String string) {
         Ordem retorno = null;
         for (Ordem o : listaOrdem) {
             if (o.getAtributo().equals(string)) {
@@ -38,8 +40,10 @@ public class ConverterOrdem implements Serializable, Converter {
         if (o == null) {
             return null;
         }
-        Ordem ordem = (Ordem) o;
-        return ordem.getAtributo();
+        // Com o primefaces 7 funciona somente retornando o toString.
+//        Ordem ordem = (Ordem) o;
+        //      return ordem.getAtributo();
+        return o.toString();
     }
 
     public List<Ordem> getListaOrdem() {
