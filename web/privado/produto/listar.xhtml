@@ -105,9 +105,9 @@
                                                  size="50" maxlength="50" id="txtNome"
                                                  placeholder="Obrigatório"/>  
                                     <p:outputLabel value="Descrição" for="txtDescricao"/>
-                                    <p:textEditor widgetVar="editorDescricao" id="txtDescricao"
+                                    <p:inputTextarea id="txtDescricao"
                                                   value="#{controleProduto.objeto.descricao}"
-                                                  height="140" />
+                                                  rows="6" cols="50" />
                                     <p:outputLabel value="Preço" for="txtPreco"/>
                                     <p:inputNumber id="txtPreco" value="#{controleProduto.objeto.preco}"
                                                    thousandSeparator="" decimalSeparator="." decimalPlaces="2"
@@ -182,8 +182,8 @@
                                               mode="advanced"  
                                               update="growl nomeArquivo"  
                                               auto="true"   
-                                              label="Selecionar"
-                                              fileUploadListener="#{controleProduto.enviarArquivo}" />
+                                              label="Selecionar"                                              
+                                              listener="#{controleProduto.enviarArquivo}" />
                             </p:column>                                       
                         </p:panelGrid>
                     </div>

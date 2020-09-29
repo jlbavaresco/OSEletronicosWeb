@@ -82,14 +82,16 @@
                     </div>
                 </p:tab>
                 <p:tab title="Descrição e Resolução do Problema">
-                    <p:outputLabel value="Descrição do Problema" for="txtDescricaoProblema"/>
-                    <p:textEditor widgetVar="editorDescricao" id="txtDescricaoProblema"
-                                  value="#{controleOrdemServico.objeto.descricaoProblema}"
-                                  height="140" />                            
-                    <p:outputLabel value="Resolução do Problema" for="txtResolucaoProblema"/>
-                    <p:textEditor widgetVar="editorResolucao" id="txtResolucaoProblema"
-                                  value="#{controleOrdemServico.objeto.resolucaoProblema}"
-                                  height="140" />                      
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Descrição do Problema" for="txtDescricaoProblema"/>
+                        <p:inputTextarea cols="50" rows="6" id="txtDescricaoProblema"
+                                         value="#{controleOrdemServico.objeto.descricaoProblema}"
+                                         />                            
+                        <p:outputLabel value="Resolução do Problema" for="txtResolucaoProblema"/>
+                        <p:inputTextarea cols="50" rows="6"  id="txtResolucaoProblema"
+                                         value="#{controleOrdemServico.objeto.resolucaoProblema}"
+                                         />  
+                    </p:panelGrid>                    
                 </p:tab>   
                 <p:tab title="Itens de Serviços">
                     <p:dataTable value="#{controleOrdemServico.objeto.listaServicos}" 
@@ -294,7 +296,7 @@
         </h:form>
         <ui:include src="/templates/ajaxstatus.xhtml"/>
     </p:dialog>     
-    
+
     <p:dialog header="Edição de Item de Produto" widgetVar="dlgItemProduto" resizable="false" modal="true">
         <h:form id="formItemProduto">
             <p:growl />
@@ -361,7 +363,7 @@
                                       update="growl nomeArquivo"  
                                       auto="true"   
                                       label="Selecionar"
-                                      fileUploadListener="#{controleOrdemServico.enviarFoto}" />
+                                      listener="#{controleOrdemServico.enviarFoto}" />
                     </p:column>                                       
                 </p:panelGrid>
             </div>
@@ -377,12 +379,12 @@
             </p:panel>
         </h:form>
     </p:dialog>      
-    
+
     <p:dialog header="Visualização" widgetVar="dlgVerFoto" resizable="false"
               modal="true" width="100%" height="100%" position="top" >
         <h:form id="formVerFoto" prependId="false">                    
             <p:graphicImage value="#{controleOrdemServico.imagemDinamica}"
-					 cache="false" />
+                            cache="false" />
         </h:form>
     </p:dialog>      
 </html>

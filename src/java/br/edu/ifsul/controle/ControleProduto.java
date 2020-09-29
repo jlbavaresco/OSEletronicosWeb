@@ -107,7 +107,7 @@ public class ControleProduto implements Serializable {
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             FacesContext aFacesContext = FacesContext.getCurrentInstance();
             ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
-            arquivo.setArquivo(event.getFile().getContents());
+            arquivo.setArquivo(event.getFile().getContent());
             String nomeArquivo = event.getFile().getFileName();
             nomeArquivo = nomeArquivo.replaceAll("[ ]", "_");
             arquivo.setNomeArquivo(nomeArquivo);

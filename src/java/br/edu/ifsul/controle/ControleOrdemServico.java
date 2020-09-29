@@ -259,7 +259,7 @@ public class ControleOrdemServico implements Serializable {
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             FacesContext aFacesContext = FacesContext.getCurrentInstance();
             ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
-            foto.setArquivo(event.getFile().getContents());
+            foto.setArquivo(event.getFile().getContent());
             String nomeFoto = event.getFile().getFileName();
             nomeFoto = nomeFoto.replaceAll("[ ]", "_");
             foto.setNomeFoto(nomeFoto);
