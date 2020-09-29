@@ -1,5 +1,5 @@
 # OSEletronicosWeb
-Projeto para estudo de caso de livro sobre Java EE. Usa o Hibernate 5.3.6, Payara 5, Primefaces 7.
+Projeto para estudo de caso de livro sobre Java EE. Usa o Hibernate 5.3.6, Payara 5, Primefaces 8.
 
 Este projeto é a camada web para a camada de modelo do projeto https://github.com/jlbavaresco/OSEletronicosModel
 
